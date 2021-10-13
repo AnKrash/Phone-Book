@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /
+RewriteRule ^$ index.phtml
+
+RemoveHandler .html .htm
+AddType application/x-httpd-php .php .htm .html .phtml
