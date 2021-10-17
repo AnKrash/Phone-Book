@@ -2,41 +2,22 @@
 
 class PhoneBookModel
 {
-    protected $id;
-    protected $phone;
-    protected $surname;
+    protected int $id;
+    protected string $phone;
+    protected string $surname;
 
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getSurname()
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function getSurname(): string
     {
         return $this->surname;
     }
-
-    public function prepare(array $data)
-    {
-        $this->id = $data["id"];
-        $this->phone = $data["phone"];
-        $this->surname= $data["surname"];
-    }
-
-    public function toArray(): array
-    {
-        return [
-
-            'phone' => $this->phone,
-            'surname' => $this->surname,
-            'id' => $this->id
-        ];
-    }
-
-
 }

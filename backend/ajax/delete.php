@@ -1,6 +1,6 @@
 <?php
 
-require_once("backend/controllers/PhoneBookController.php");
+require_once("../PhoneBookController.php");
 
 $controller = new PhoneBookController();
 $controller->ajaxDelete();

@@ -3,9 +3,9 @@
 //Singleton for the DB connection
 class Database
 {
-    private static $connection = null;
+    private static ?PDO $connection = null;
 
-    public static function getConnection()
+    public static function getConnection():PDO
     {
         if (self::$connection === null) {
             self::$connection = new PDO('mysql:host=localhost;dbname=appBook', 'root', 'root');

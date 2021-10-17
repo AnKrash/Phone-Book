@@ -1,94 +1,118 @@
 <?php
 require_once("backend/PhoneBookController.php");
-require_once("backend/PhoneBookModel.php");
 $controller = new PhoneBookController();
 $products = $controller->index();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <!--    <link rel="stylesheet" href="style.css">-->
     <meta charset="UTF-8">
     <title>Product List</title>
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
 </head>
 <body>
 <div class="container px-3">
     <div class="py-3 mx-3 justify-content-md-center">
-    <h3 class="col-6 justify-content-md-start">Phone Book</h3>
+        <h3 class="col-6 justify-content-md-start">Phone Book</h3>
     </div>
-    <p>
-<div>
     <form id="insert-form" action="" method="post">
-        <div class="row">
-            <div class="row py-5 mx-5">
-        <div class="col">
-            <div class="row ">
-                <div class="col-md-4">
-                    <label for="phone" class="form-label">Phone number</label>
-                </div>
-                <div class="col-md-8 ">
-                    <input name="phone" type="text" class="form-control" id="phone" autocomplete="off">
+        <div class="row py-5 mx-5">
+            <div class="col">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="phone" class="form-label">Phone number</label>
+                    </div>
+                    <div class="col-md-8 ">
+                        <input name="phone" type="text" class="form-control" id="phone" autocomplete="off" required>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="surname" class="form-label">Name</label>
+            <div class="col">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="surname" class="form-label">Name</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input name="surname" type="text" class="form-control" id="surname" autocomplete="off"
+                               required>
+                    </div>
                 </div>
-                <div class="col-md-8">
-                    <input name="surname" type="text" class="form-control" id="surname" autocomplete="off">
-                </div>
-
             </div>
-        </div>
-        <div class="col">
-            <input name="Save" type="submit" value="Save" class="btn btn-success">
-        </div>
+            <div class="col">
+                <input name="Save" type="submit" value="Save" class="btn btn-success">
+            </div>
+            <div>
+                <h5 class="d-none alert-success mt-2" id="success-message">Data added successfully!</h5>
+            </div>
+            <div>
+                <h5 class="d-none alert-danger mt-2" id="error-message">Error saving data!</h5>
+            </div>
         </div>
     </form>
 
+    <table id="phone-book-table" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Surname</th>
+            <th scope="col">Phone</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($products as $product) { ?>
+            <tr>
+                <td>
+                    <label>
+                        <input type="text" class="form-control surname-input" value="<?= $product->getSurname() ?>"
+                               disabled required>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="text" class="form-control phone-input" value="<?= $product->getPhone() ?>"
+                               disabled required>
+                    </label>
+                </td>
+                <td>
+                    <button class="btn btn-warning change-button">
+                        <i class="far fa-edit" size="3x"></i>
+                    </button>
+                    <button class="btn btn-warning update-button" style="display: none"
+                            data-id="<?= $product->getId(); ?>">
+                        <i class="far fa-save" size="3x"></i>
+                    </button>
+                    <button type="button" data-id="<?= $product->getId(); ?>"
+                            class="btn btn-danger delete-button"><i class="fas fa-trash" size="3x"></i>
+                    </button>
+                </td>
+            </tr>
+        <?php } ?>
+        <tr id="row-clone" class="d-none">
+            <td>
+                <label>
+                    <input type="text" class="form-control surname-input" disabled required>
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="text" class="form-control phone-input" disabled required>
+                </label>
+            </td>
+            <td>
+                <button class="btn btn-warning change-button">
+                    <i class="far fa-edit" size="3x"></i>
+                </button>
+                <button class="btn btn-warning update-button" style="display: none">
+                    <i class="far fa-save" size="3x"></i>
+                </button>
+                <button type="button" class="btn btn-danger delete-button"><i class="fas fa-trash" size="3x"></i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-
-
-
-        <div class="slider multiple-items">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-
-                    <th scope="col">Surname</th>
-                    <th scope="col">Phone</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($products as $product) { ?>
-
-                    <tr>
-                        <td><p><label>
-                                    <input type="text" value="<?= $product->getSurname() ?>" disabled>
-                                </label></p></td>
-                        <td><p><label>
-                                    <input type="text" value="<?= $product->getPhone() ?>" disabled>
-                                </label></p></td>
-                        <td><p><input name="Change" type="submit" value="Change" class="btn btn-success" ></p></td>
-                        <td><p><input name="Save-Change" type="submit" value="Save-Change" class="btn btn-success" disabled></p></td>
-                        <td><p><input name="Delete" type="submit" value="Delete" class="btn btn-success" ></p></td>
-                        <td <?= $product->getId(); ?>></td>
-                    </tr>
-                <?php } ?>
-                </tbody>
-            </table>
-        </div>
-        <p>
-
-    </div>
-</div>
-
-
 
 <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
 <script src="script.js"></script>
